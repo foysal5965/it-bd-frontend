@@ -22,7 +22,13 @@ export const courseApi = baseApi.injectEndpoints({
             },
             providesTags: [tagTypes.course]
         }),
-        
+        getSingleCourse: build.query({
+            query: (id: string | string[] | undefined) => ({
+               url: `/course/${id}`,
+               method: 'GET',
+            }),
+            providesTags: [tagTypes.course],
+         }),
     addCourseWithFormData: build.mutation({
       query: (data) => ({
         url: "/course/create-course",
@@ -39,6 +45,7 @@ export const courseApi = baseApi.injectEndpoints({
 export const {
      
      useAddCourseWithFormDataMutation,
-     useCourseQuery
+     useCourseQuery,
+     useGetSingleCourseQuery
      } = courseApi
 

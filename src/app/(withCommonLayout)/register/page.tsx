@@ -12,6 +12,7 @@ import ITInput from '@/components/Forms/ITInput';
 import { useRouter } from 'next/navigation';
 import { userLogin } from '@/services/actions/userLogin';
 import { storeUserInfo } from '@/services/authService';
+import { useState } from 'react';
 interface Student {
     name: string;
     email: string;
@@ -23,6 +24,11 @@ interface FormData {
     student: Student;
     password: string;
 }
+type CourseCategoryErrorResponse = {
+    data: string;
+    statusCode: number;
+    message: string;
+  };
 // 1. Create the Zod validation schema
 const validationSchema = z.object({
     student: z.object({
@@ -46,6 +52,7 @@ export const defaultValues = {
 
 const RegistrationForm = () => {
     const router = useRouter()
+    const [error, setError]= useState('')
     const { register, handleSubmit, formState: { errors } } = useForm<FormData>({
         resolver: zodResolver(validationSchema),
     });
@@ -62,12 +69,14 @@ const RegistrationForm = () => {
 
                 const result = await userLogin({
                     password: values.password,
-                    email: values.patient.email,
+                    email: values.student.email,
                 });
                 if (result?.data?.accessToken) {
                     storeUserInfo({ accessToken: result?.data?.accessToken });
                     router.push("/");
                 }
+            }else{
+                setError(res.message)
             }
         } catch (err: any) {
             console.error(err.message);
@@ -183,7 +192,11 @@ const RegistrationForm = () => {
                         helperText={errors.student?.address?.message}
                     />
                 </motion.div>
-
+                <Typography sx={{
+                    textAlign:'center',
+                    color:'red',
+                    fontWeight:'400'
+                }}>{error ? error : ''}</Typography>
                 {/* Register Button */}
                 <Button
                     component={motion.button}

@@ -45,13 +45,11 @@ const ProfilePage = () => {
     bio:''
   };
 
-  // Set user data based on role
-  if (adminData && Array.isArray(adminData) && adminData.length > 0) {
-    user = adminData[0]; // Assume adminData[0] has the User structure
-  } else if (studentData && Array.isArray(studentData) && studentData.length > 0) {
-    user = studentData[0]; // Assume studentData[0] has the User structure
+  if (adminData?.data && Array.isArray(adminData?.data) && adminData?.data.length > 0) {
+    user = adminData?.data[0]; // Assume adminData[0] has the User structure
+  } else if (studentData?.data && Array.isArray(studentData?.data) && studentData?.data.length > 0) {
+    user = studentData?.data[0]; // Assume studentData[0] has the User structure
   }
-console.log(user)
   return (
     <Box
       component={motion.div}

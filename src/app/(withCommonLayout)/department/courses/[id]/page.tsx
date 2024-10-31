@@ -15,26 +15,17 @@ const CourseDetails = ({params}:any) => {
    let course ={}
     const query= {id: params.id}
     const{data, isLoading}= useCourseQuery({...query})
-     // Check if course data is an array or an object
-     if (Array.isArray(data)) {
-        course=(data[0]); // Log the first element of the course array if it's an array
+     if (Array.isArray(data?.data)) {
+        course=(data?.data[0]);
     } 
-
     let user={}
-    
-    
-    // console.log(isLoading)
     const userInfo = useUserInfo()
-    
     const query2 = {email:userInfo?.email}
     const{data:userData}= useUserQuery({...query2})
     
-    if (Array.isArray(userData)) {
-        user=(userData[0]); // Log the first element of the course array if it's an array
+    if (Array.isArray(userData?.data)) {
+        user=(userData?.data[0]); // Log the first element of the course array if it's an array
     } 
-
-    
-    
     if(isLoading){
         return <Loading/>
     }

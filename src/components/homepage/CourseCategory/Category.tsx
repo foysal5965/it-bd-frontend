@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import CourseCategory from './CourseCategory';
 import Loading from '@/components/shared/loading/loading';
+import { useGetCourseCategoryQuery } from '@/redux/api/courseCategory.api';
 interface DataItem {
     image: string,
     categoryName: string
@@ -10,6 +11,7 @@ export interface Props {
     data: DataItem[];
 }
 export const Category = () => {
+
     const [data, setData] = useState<Props[]>([]);
     const [loading, setLoading] = useState(true);
 

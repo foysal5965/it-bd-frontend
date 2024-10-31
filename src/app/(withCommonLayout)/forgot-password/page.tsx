@@ -3,6 +3,7 @@ import { useState } from 'react';
 import { Box, Button, Container, TextField, Typography } from '@mui/material';
 import { motion } from 'framer-motion';
 import {z} from 'zod'
+import AnimatedButton from '@/lib/animatated/animatedButton';
 const validationSchema = z.object({
   email: z.string().email('Please enter a valid email address!'),
 });
@@ -78,19 +79,7 @@ const ForgetPasswordPage = () => {
                 'aria-label': 'email',
               }}
             />
-            <Button
-              type="submit"
-              variant="contained"
-              color="primary"
-              fullWidth
-              component={motion.button}
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-              transition={{ type: 'spring', stiffness: 300 }}
-              sx={{ mt: 1 }}
-            >
-              Reset Password
-            </Button>
+            <AnimatedButton name='Foreget password'/>
           </Box>
         ) : (
           <Box

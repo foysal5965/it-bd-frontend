@@ -1,6 +1,6 @@
 import { authKey } from '@/constants/authkey';
 import setAccessToken from '@/services/actions/setAccessToken';
-import { getNewAccessToken } from '@/services/authService';
+import { getNewAccessToken, storeUserInfo } from '@/services/authService';
 import { IGenericErrorResponse, ResponseSuccessType } from '@/types';
 import { getFromLocalStorage, setToLocalStorage } from '@/utils/local-storage';
 import axios, { AxiosResponse } from 'axios';
@@ -10,7 +10,7 @@ instance.defaults.headers.post['Content-Type'] = 'application/json';
 instance.defaults.headers['Accept'] = 'application/json';
 instance.defaults.timeout = 60000;
 
-// Add a request interceptor
+// Request interceptor to add Authorization header
 instance.interceptors.request.use(
    async function (config) {
       const accessToken = getFromLocalStorage(authKey);
@@ -20,58 +20,47 @@ instance.interceptors.request.use(
       return config;
    },
    function (error) {
-      // Handle request error
       return Promise.reject(error);
    }
 );
 
-// Add a response interceptor
+// Response interceptor for handling token expiration and refresh logic
 instance.interceptors.response.use(
    function (response: AxiosResponse) {
-      // Create a response object based on the expected format
       const responseObject: ResponseSuccessType = {
          data: response.data.data,
          meta: response.data.meta,
       };
-      // Return the original response along with your custom object
       return {
          ...response,
-         data: responseObject, // Replace the data with your custom response
-      } as AxiosResponse<ResponseSuccessType>; // Type assertion
+         data: responseObject,
+      } as AxiosResponse<ResponseSuccessType>;
    },
    async function (error) {
       const config = error.config;
 
-      // Handle server errors and token refresh logic
-      if (error?.response?.status === 401 && !config.sent) {
-         config.sent = true; // Prevent repeated token refresh attempts
-
+      if (error?.response?.status === 500 && !config.sent) {
+         config.sent = true;
          try {
-            const refreshResponse = await getNewAccessToken();
-            const accessToken = refreshResponse?.data?.accessToken;
-
-            if (accessToken) {
-               // Set the new access token in headers
-               config.headers['Authorization'] = accessToken;
-               setToLocalStorage(authKey, accessToken);
-               setAccessToken(accessToken);
-
-               // Retry the original request with the new access token
-               return instance(config);
-            }
+            const response = await getNewAccessToken();
+            const accessToken = response?.data?.data?.accessToken;
+            config.headers['Authorization'] = accessToken;
+            setToLocalStorage(authKey, accessToken);
+            setAccessToken(accessToken);
+            return instance(config);
          } catch (refreshError) {
-            // Handle token refresh errors
+            // Handle refresh token errors (e.g., refresh token expired, user needs to log in again)
+            console.error('Failed to refresh access token', refreshError);
             return Promise.reject(refreshError);
          }
       }
-
-      // Handle other errors
       const responseObject: IGenericErrorResponse = {
          statusCode: error?.response?.data?.statusCode || 500,
-         message: error?.response?.data?.message || 'Something went wrong!',
-         errorMessages: error?.response?.data?.errorMessages || [],
+         message:
+            error?.response?.data?.message || 'Something went wrong!!!',
+         errorMessages: error?.response?.data?.message,
       };
-
+      // return Promise.reject(error);
       return Promise.reject(responseObject);
    }
 );

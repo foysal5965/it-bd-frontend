@@ -8,7 +8,7 @@ import { useAddCourseCategoryWithFormDataMutation } from '@/redux/api/courseCate
 import { modifyPayload } from '@/utils/modifyPayload';
 import { toast } from 'sonner';
 import { IGenericErrorMessage } from '@/types';
-type CourseCategoryErrorResponse = {
+export type ErrorResponse = {
     data: string;
     statusCode: number;
     message: string;
@@ -47,7 +47,7 @@ const CreateCourseCategory = () => {
             try {
                 // Call Redux mutation to add the course category
                 const res = await addCourseCategoryWithFormData(formData)
-                console.log(res)
+                // console.log(res)
                 if (res?.data?.data?.id) {
                     toast.success('Category created Successfuly')
                     // Reset form after success
@@ -56,7 +56,7 @@ const CreateCourseCategory = () => {
                     setImage(null);
                     setImagePreview(null);
                 } else if (res.error) {
-                    const errorResponse = res.error as CourseCategoryErrorResponse;
+                    const errorResponse = res.error as ErrorResponse;
                     setError(errorResponse?.data || 'An unknown error occurred.');
                 }
 
@@ -107,7 +107,7 @@ const CreateCourseCategory = () => {
                                     <img
                                         src={imagePreview}
                                         alt="Preview"
-                                        style={{ width:'150px', height:'150px', marginBottom: 16 }}
+                                        style={{ width:'32px', height:'32px', marginBottom: 16 }}
                                     />
                                 ) : (
                                     <CloudUploadIcon style={{ fontSize: 48, color: "#ccc" }} />

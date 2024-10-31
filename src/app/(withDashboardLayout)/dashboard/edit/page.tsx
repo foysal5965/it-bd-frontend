@@ -16,7 +16,8 @@ interface User {
     email: string;
     profilePhoto?: string; // Mark it as optional
     address: string;
-    contactNumber: string
+    contactNumber: string;
+    bio:string
 }
 const EditProfilePage = () => {
     // State for the uploaded image and its preview
@@ -30,14 +31,14 @@ const EditProfilePage = () => {
         reset
     } = useForm();
     const router = useRouter()
-    const [updateMyProfile, {isLoading}] = useUpdateMYProfileMutation()
+    const [updateMyProfile, { isLoading }] = useUpdateMYProfileMutation()
     const logedinUserInfo = useUserInfo();
-
+    console.log(logedinUserInfo)
     let adminquery = {};
     let studentQuery = {};
 
     // Call both hooks unconditionally, but use `skip` to control whether they execute
-    if (logedinUserInfo?.role === 'super_admin') {
+    if (logedinUserInfo?.role === 'super_admin' || logedinUserInfo?.role === 'admin') {
         adminquery = { email: logedinUserInfo.email };
     }
 
@@ -45,26 +46,28 @@ const EditProfilePage = () => {
         studentQuery = { email: logedinUserInfo.email };
     }
 
-    const { data: adminData, isLoading: isAdminLoading } = useAdminQuery(adminquery, { skip: !adminquery });
-    const { data: studentData, isLoading: isStudentLoading } = useStudentQuery(studentQuery, { skip: !studentQuery });
+    const { data: adminData, isLoading: isAdminLoading } = useAdminQuery({ ...adminquery });
+    // console.log(adminData)
+    const { data: studentData, isLoading: isStudentLoading } = useStudentQuery({ ...studentQuery });
 
+    // console.log(studentData)
     // Loading state
     if (isAdminLoading || isStudentLoading) {
         return <Loading />;
     }
-
     let user: User = {
         name: '',
         email: '',
         address: '',
-        contactNumber: ''
+        contactNumber: '',
+        bio:''
     };
 
     // Set user data based on role
-    if (adminData && Array.isArray(adminData) && adminData.length > 0) {
-        user = adminData[0]; // Assume adminData[0] has the User structure
-    } else if (studentData && Array.isArray(studentData) && studentData.length > 0) {
-        user = studentData[0]; // Assume studentData[0] has the User structure
+    if (adminData?.data && Array.isArray(adminData?.data) && adminData?.data?.length > 0) {
+        user = adminData?.data[0]; // Assume adminData[0] has the User structure
+    } else if (studentData?.data && Array.isArray(studentData?.data) && studentData?.data.length > 0) {
+        user = studentData?.data[0]; // Assume studentData[0] has the User structure
     }
 
 
@@ -95,7 +98,7 @@ const EditProfilePage = () => {
 
         try {
             const res = await updateMyProfile(formData)
-            if (res.data.id) {
+            if (res.data.data.id) {
                 toast.success('profile updated successfuly!!')
                 router.push('/dashboard/view')
             }
@@ -166,7 +169,7 @@ const EditProfilePage = () => {
                         </Grid>
                         <Grid item xs={12}>
                             <TextField fullWidth label="Location"
-
+                                defaultValue={user.address}
                                 error={!!errors.address}
                                 helperText={errors.address ? String(errors.address.message) : ''}
                                 {...register('address')}
@@ -174,6 +177,7 @@ const EditProfilePage = () => {
                         </Grid>
                         <Grid item xs={12}>
                             <TextField fullWidth label="Bio"
+                            defaultValue={user?.bio}
                                 error={!!errors.bio}
                                 helperText={errors.bio ? String(errors.bio.message) : ''}
                                 {...register('bio')}
@@ -181,15 +185,15 @@ const EditProfilePage = () => {
                         </Grid>
 
                         <Grid item xs={12}>
-                            <Button  sx={{
+                            <Button sx={{
                                 background: 'linear-gradient(45deg, #FE6B8B 30%, #FF8E53 90%)', // Gradient color
                                 borderRadius: '15px', // Rounded button
                                 padding: '10px 20px',
                                 color: '#fff', // Text color
                                 fontSize: '15px',
                                 fontWeight: 'bold', // Initial shadow
-                                
-                            }} type="submit" variant="contained" fullWidth disabled={ isLoading }>
+
+                            }} type="submit" variant="contained" fullWidth disabled={isLoading}>
                                 Save Changes
                             </Button>
                         </Grid>

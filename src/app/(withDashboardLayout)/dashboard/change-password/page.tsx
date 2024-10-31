@@ -58,9 +58,9 @@ const ChangePassword = () => {
                 setError('Confirm password is not correct!')
             } else {
                 const res = await changePassword(changePasswordData)
-                
+                // console.log(res)
                 if (res?.data) {
-                    toast.success(res?.data?.message)
+                    toast.success(res?.data?.data?.message)
                     reset();
                     router.push('/login') // Optionally reset the form after successful password change
                 } else if (res?.error) {
@@ -140,7 +140,7 @@ const ChangePassword = () => {
                                             onClick={() => setShowCurrentPassword(!showCurrentPassword)}
                                             edge="end"
                                         >
-                                            {showCurrentPassword ? <VisibilityOff /> : <Visibility />}
+                                            {showCurrentPassword ? <Visibility />:<VisibilityOff /> }
                                         </IconButton>
                                     </InputAdornment>
                                 ),
@@ -167,7 +167,7 @@ const ChangePassword = () => {
                                             onClick={() => setShowNewPassword(!showNewPassword)}
                                             edge="end"
                                         >
-                                            {showNewPassword ? <VisibilityOff /> : <Visibility />}
+                                            {showNewPassword ? <Visibility />:<VisibilityOff />  }
                                         </IconButton>
                                     </InputAdornment>
                                 ),
@@ -196,11 +196,7 @@ const ChangePassword = () => {
                                             }
                                             edge="end"
                                         >
-                                            {showConfirmPassword ? (
-                                                <VisibilityOff />
-                                            ) : (
-                                                <Visibility />
-                                            )}
+                                            {showConfirmPassword ? <Visibility />:<VisibilityOff /> }
                                         </IconButton>
                                     </InputAdornment>
                                 ),

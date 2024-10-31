@@ -14,6 +14,7 @@ import useUserInfo from "@/hooks/userUserInfo";
 import { useStudentQuery } from "@/redux/api/studentApi";
 import Link from "next/link";
 import SeminerModal from "../modal/SeminerModal";
+import Loading from "../shared/loading/loading";
 
 
 interface User {
@@ -23,12 +24,12 @@ const CourseDetailsHeroSection = ({ course, user }: any) => {
     const [modalOpen, setModalOpen] = useState(false);
     const [seminerModal, setSeminerModal]= useState(false)
     let student = {}
+    
     const query = { email: user.email }
     const { data: studenInfo, isLoading } = useStudentQuery({ ...query })
-    if (Array.isArray(studenInfo)) {
-        student = (studenInfo[0]); // Log the first element of the course array if it's an array
+    if (Array.isArray(studenInfo?.data)) {
+        student = (studenInfo?.data[0]); // Log the first element of the course array if it's an array
     }
-
     const handleOpen = () => {
         setModalOpen(true);
     };
@@ -47,7 +48,9 @@ const CourseDetailsHeroSection = ({ course, user }: any) => {
     // Sample user and course information
 
 
-
+if(isLoading){
+    return <Loading/>
+}
 
     return (
         <Container>

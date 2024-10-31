@@ -2,7 +2,7 @@
 import { FieldValues, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
-import { Box, TextField, Button, Container, Typography } from '@mui/material';
+import { Box, TextField, Button, Container, Typography, InputAdornment, IconButton } from '@mui/material';
 import { motion } from 'framer-motion';
 import { modifyPayload } from '@/utils/modifyPayload';
 import { registerStudent } from '@/services/actions/registerStudent';
@@ -16,8 +16,16 @@ import { storeUserInfo } from '@/services/authService';
 import { useState } from 'react';
 import { useUserLoginMutation } from '@/redux/api/authApi';
 import setAccessToken from '@/services/actions/setAccessToken';
+import { Visibility, VisibilityOff } from '@mui/icons-material';
+import Cookies from 'js-cookie';
+import { useAuth } from '@/lib/Providers/AuthProvider';
+import { userLogin } from '@/services/actions/userLogin';
 
-
+type CourseCategoryErrorResponse = {
+    data: string;
+    statusCode: number;
+    message: string;
+};
 interface LoginData {
     email: string
     password: string;
@@ -38,26 +46,28 @@ export const defaultValues = {
 };
 // 2. Your component
 const LoginPage = () => {
+    const { login } = useAuth();
     const router = useRouter()
     const { register, handleSubmit, formState: { errors } } = useForm<LoginData>({
         resolver: zodResolver(validationSchema),
     });
     const [error, setError] = useState('')
-    const [userLogin, isLoading] = useUserLoginMutation()
+    const [showNewPassword, setShowNewPassword] = useState(false);
+    // const [userLogin, isLoading] = useUserLoginMutation()
     const handleRegister = async (values: FieldValues) => {
-
+        const res = await userLogin(values);
         try {
-            const res = await userLogin(values);
             console.log(res)
-            if (res?.data?.data?.accessToken) {
+            if (res?.data?.accessToken) {
                 // console.log(res)
-                toast.success('Logged in succesfuly');
-                storeUserInfo({ accessToken: res?.data?.data?.accessToken });
-                setAccessToken(res?.data?.data?.accessToken)
+                toast.success(res.message);
+                storeUserInfo({ accessToken: res?.data?.accessToken });
+                login(res.data.accessToken);
                 router.push('/')
-            } else {
-                setError(res?.error?.data as string)
             }
+
+            setError(res.message || 'An unknown error occurred.');
+
         } catch (err: any) {
 
         }
@@ -93,7 +103,7 @@ const LoginPage = () => {
             >
                 Login
             </Typography>
-            
+
             <Box
                 component={motion.form}
                 onSubmit={handleSubmit(handleRegister)}
@@ -128,13 +138,25 @@ const LoginPage = () => {
                 <motion.div initial={{ x: -100, opacity: 0 }} animate={{ x: 0, opacity: 1 }} transition={{ delay: 0.6, duration: 0.5 }}>
                     <TextField
                         label="Password"
-                        type="password"
+                        type={showNewPassword ? 'text' : 'password'}
                         variant="outlined"
                         size='small'
                         fullWidth
                         {...register("password")}
                         error={!!errors.password}
                         helperText={errors.password?.message}
+                        InputProps={{
+                            endAdornment: (
+                                <InputAdornment position="end">
+                                    <IconButton
+                                        onClick={() => setShowNewPassword(!showNewPassword)}
+                                        edge="end"
+                                    >
+                                        {showNewPassword ? <Visibility /> : <VisibilityOff />}
+                                    </IconButton>
+                                </InputAdornment>
+                            ),
+                        }}
                     />
                 </motion.div>
 
@@ -155,9 +177,9 @@ const LoginPage = () => {
                     </Typography>
                 </Link>
                 <Typography sx={{
-                    textAlign:'center',
-                    color:'red',
-                    fontWeight:'400'
+                    textAlign: 'center',
+                    color: 'red',
+                    fontWeight: '400'
                 }}>{error ? error : ''}</Typography>
                 {/* Register Button */}
                 <Button

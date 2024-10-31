@@ -17,7 +17,6 @@ const AdminPage = () => {
 
   const handleDelete = async(adminId: any) => {
     const res = await deleteAdmin(adminId)
-    console.log(res)
     if(res){
       toast.success('Admin data deleted successfuly!!')
     }
@@ -30,7 +29,7 @@ const AdminPage = () => {
       <Typography variant="h4" gutterBottom>
         Admins List
       </Typography>
-      <AdminTable admins={admins} handleDelete={handleDelete} />
+      <AdminTable admins={admins?.data} handleDelete={handleDelete} />
     </Container>
   );
 };

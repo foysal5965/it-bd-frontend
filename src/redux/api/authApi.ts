@@ -10,6 +10,7 @@ export const authApi = baseApi.injectEndpoints({
             url: `${AUTH_URL}/login`,
             method: 'POST',
             data: loginData,
+            credentials: 'include',
          }),
          invalidatesTags: [tagTypes.user],
       }),

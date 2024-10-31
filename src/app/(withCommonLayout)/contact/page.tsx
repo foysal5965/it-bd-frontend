@@ -1,179 +1,118 @@
-'use client';
-
-import React, { useState } from 'react';
-import { Box, Container, Typography, TextField, Button, Grid2 as Grid, Paper } from '@mui/material';
+'use client'
+import { Container, Typography, TextField, Button, Box } from '@mui/material';
 import { motion } from 'framer-motion';
 
-const CreateAdminPage = () => {
-  const [formData, setFormData] = useState({
-    name: '',
-    email: '',
-    password: '',
-  });
-
-  const [errors, setErrors] = useState({ name: '', email: '', password: '' });
-
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
-    setFormData({ ...formData, [name]: value });
-    setErrors({ ...errors, [name]: '' }); // Reset errors on input change
+const ContactPage = () => {
+  // Animation Variants
+  const containerVariants = {
+    hidden: { opacity: 0, x: -100 },
+    visible: {
+      opacity: 1,
+      x: 0,
+      transition: { type: 'spring', stiffness: 50, delay: 0.2 },
+    },
   };
 
-  const validateForm = () => {
-    const newErrors = { name: '', email: '', password: '' };
-    let isValid = true;
-
-    if (!formData.name) {
-      newErrors.name = 'Name is required';
-      isValid = false;
-    }
-
-    if (!formData.email) {
-      newErrors.email = 'Email is required';
-      isValid = false;
-    } else if (!/\S+@\S+\.\S+/.test(formData.email)) {
-      newErrors.email = 'Email is invalid';
-      isValid = false;
-    }
-
-    if (!formData.password) {
-      newErrors.password = 'Password is required';
-      isValid = false;
-    }
-
-    setErrors(newErrors);
-    return isValid;
-  };
-
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    if (validateForm()) {
-      // Submit form data to your API or service
-      console.log('Admin data submitted:', formData);
-    }
+  const buttonHover = {
+    scale: 1.05,
+    boxShadow: "0px 4px 15px rgba(0, 0, 0, 0.2)",
+    transition: { duration: 0.3 },
   };
 
   return (
-    <Container
+    <Container 
       maxWidth="sm"
-      sx={{
-        padding: '2rem 0',
-      }}
+      component={motion.div}
+      initial="hidden"
+      animate="visible"
+      variants={containerVariants}
+      sx={{ my: 5 }}
     >
-      <Typography
-        component={motion.h1}
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.5 }}
-        variant="h4"
-        align="center"
-        gutterBottom
-        sx={{ color: '#FF7E5F' }}
-      >
-        Create Admin
+      {/* Page Title */}
+      <Typography variant="h3" component="h1" gutterBottom align="center">
+        Contact Us
+      </Typography>
+      {/* Description */}
+      <Typography variant="body1" align="center" paragraph>
+        We’d love to hear from you! Please fill out the form below.
       </Typography>
 
-      <Paper
-        elevation={3}
-        sx={{
-          padding: '2rem',
-          borderRadius: 2,
-          backgroundColor: '#fff',
-          boxShadow: '0px 4px 10px rgba(0, 0, 0, 0.1)',
-        }}
+      {/* Contact Form */}
+      <Box
+        component="form"
+        display="flex"
+        flexDirection="column"
+        gap={3}
       >
-        <form onSubmit={handleSubmit}>
-          <Grid container spacing={2}>
-            <Grid xs={12}>
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5 }}
-              >
-                <TextField
-                  label="Name"
-                  variant="outlined"
-                  fullWidth
-                  required
-                  name="name"
-                  value={formData.name}
-                  onChange={handleChange}
-                  error={!!errors.name}
-                  helperText={errors.name}
-                />
-              </motion.div>
-            </Grid>
+        {/* Name Field */}
+        <motion.div
+          initial={{ opacity: 0, y: 50 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.3 }}
+        >
+          <TextField 
+            label="Name" 
+            variant="outlined" 
+            fullWidth 
+            required 
+          />
+        </motion.div>
 
-            <Grid xs={12}>
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5 }}
-              >
-                <TextField
-                  label="Email"
-                  variant="outlined"
-                  type="email"
-                  fullWidth
-                  required
-                  name="email"
-                  value={formData.email}
-                  onChange={handleChange}
-                  error={!!errors.email}
-                  helperText={errors.email}
-                />
-              </motion.div>
-            </Grid>
+        {/* Email Field */}
+        <motion.div
+          initial={{ opacity: 0, y: 50 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.5 }}
+        >
+          <TextField 
+            label="Email" 
+            type="email" 
+            variant="outlined" 
+            fullWidth 
+            required 
+          />
+        </motion.div>
 
-            <Grid xs={12}>
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5 }}
-              >
-                <TextField
-                  label="Password"
-                  variant="outlined"
-                  type="password"
-                  fullWidth
-                  required
-                  name="password"
-                  value={formData.password}
-                  onChange={handleChange}
-                  error={!!errors.password}
-                  helperText={errors.password}
-                />
-              </motion.div>
-            </Grid>
+        {/* Message Field */}
+        <motion.div
+          initial={{ opacity: 0, y: 50 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.7 }}
+        >
+          <TextField 
+            label="Message" 
+            variant="outlined" 
+            fullWidth 
+            multiline 
+            rows={4} 
+            required 
+          />
+        </motion.div>
 
-            <Grid xs={12}>
-              <motion.div
-                initial={{ scale: 0.9 }}
-                whileHover={{ scale: 1.05 }}
-                transition={{ duration: 0.3 }}
-              >
-                <Button
-                  type="submit"
-                  variant="contained"
-                  color="primary"
-                  fullWidth
-                  sx={{
-                    padding: '1rem',
-                    backgroundColor: '#FF7E5F',
-                    '&:hover': {
-                      backgroundColor: '#FF6F3C',
-                    },
-                  }}
-                >
-                  Create Admin
-                </Button>
-              </motion.div>
-            </Grid>
-          </Grid>
-        </form>
-      </Paper>
+        {/* Submit Button with hover effect */}
+        <Box>
+          <motion.div whileHover={buttonHover}>
+            <Button 
+              type="submit" 
+              variant="contained" 
+              fullWidth
+              sx={{
+                background: 'linear-gradient(45deg, #FE6B8B 30%, #FF8E53 90%)', // Gradient color
+                borderRadius: '15px', // Rounded button
+                padding: '10px 20px',
+                color: '#fff', // Text color
+                fontSize: '15px',
+                fontWeight: 'bold', // Initial shadow
+                
+              }}
+            >
+              Send Message
+            </Button>
+          </motion.div>
+        </Box>
+      </Box>
     </Container>
   );
 };
 
-export default CreateAdminPage;
+export default ContactPage;

@@ -16,12 +16,14 @@ import Image from 'next/image';
 import AnimatedButton from '@/lib/animatated/animatedButton';
 import { logoutUser } from '@/services/actions/logoutUser';
 import SupervisorAccountIcon from '@mui/icons-material/SupervisorAccount';
+import { useAuth } from '@/lib/Providers/AuthProvider';
 
 const drawerWidth = 240;
 
 const menuItems: any = {
     student: [
         { text: 'My Courses', icon: <Class />, href: '/dashboard/student/my-course' },
+        { text: 'Exams', icon: <Class />, href: '/dashboard/student/exam' },
         {
             text: 'Profile',
             icon: <Person />,
@@ -34,6 +36,11 @@ const menuItems: any = {
 
     ],
     admin: [
+        {
+            text: 'Exam', icon: <Category />, submenu: [
+                { text: 'Create Exam', icon: <Category />, href: '/dashboard/admin/exam/create' }
+            ]
+        },
         {
             text: 'Course Category', icon: <Category />, submenu: [
                 { text: 'Categories', icon: <Category />, href: '/dashboard/admin/courseCategory' },
@@ -59,12 +66,18 @@ const menuItems: any = {
     ],
     super_admin: [
         {
-            text:'Admin', icon:<SupervisorAccountIcon/>, submenu:[
-                {text:'Admins', href:'/dashboard/super-admin/admin'},
-                {text:'Create admin', href:'/dashboard/super-admin/admin/create'},
+            text: 'Admin', icon: <SupervisorAccountIcon />, submenu: [
+                { text: 'Admins', href: '/dashboard/super-admin/admin' },
+                { text: 'Create admin', href: '/dashboard/super-admin/admin/create' },
             ]
         },
-
+        {
+            text: 'Exam', icon: <Category />, submenu: [
+                { text: 'Exams', icon: <Category />, href: '/dashboard/admin/exam' },
+                { text: 'Create Exam', icon: <Category />, href: '/dashboard/admin/exam/create' },
+                
+            ]
+        },
         {
             text: 'Course Category', icon: <Category />, submenu: [
                 { text: 'Categories', icon: <Category />, href: '/dashboard/admin/courseCategory' },
@@ -98,10 +111,16 @@ const DashboardLayout = ({ children }: { children: React.ReactNode }) => {
     const [openMenuIndex, setOpenMenuIndex] = useState<number | null>(null); // Track the open menu index for dropdown
     const [showLogo, setShowLogo] = useState(true);
     const [lastScrollPos, setLastScrollPos] = useState(0);
+    const {logout,user} = useAuth()
+   
+    const handleLinkClick = () => {
+        setMobileOpen(false);
+    };
     const router = useRouter();
 
     const handleLogOut = () => {
         logoutUser(router);
+        logout()
     };
 
     const handleDrawerToggle = () => {
@@ -190,7 +209,7 @@ const DashboardLayout = ({ children }: { children: React.ReactNode }) => {
                             <Collapse in={openMenuIndex === index} timeout="auto" unmountOnExit>
                                 <List component="div" disablePadding>
                                     {item.submenu.map((subitem: any) => (
-                                        <Link href={subitem.href} passHref key={subitem.text}>
+                                        <Link onClick={handleLinkClick} href={subitem.href} passHref key={subitem.text}>
                                             <ListItem
                                                 sx={{ pl: 4 }}
 
@@ -208,15 +227,15 @@ const DashboardLayout = ({ children }: { children: React.ReactNode }) => {
                 ))}
             </List>
 
-            <Button  sx={{
+            <Button sx={{
                 background: 'linear-gradient(45deg, #FE6B8B 30%, #FF8E53 90%)', // Gradient color
                 borderRadius: '15px', // Rounded button
                 padding: '10px 20px',
                 color: '#fff', // Text color
                 fontSize: '15px',
                 fontWeight: 'bold',
-                marginLeft:'30px',
-                width:'150px' // Initial shadow
+                marginLeft: '30px',
+                width: '150px' // Initial shadow
 
             }} onClick={handleLogOut}>Logout</Button>
         </div>

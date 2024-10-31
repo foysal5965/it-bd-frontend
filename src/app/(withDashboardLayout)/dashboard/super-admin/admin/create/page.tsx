@@ -18,7 +18,7 @@ interface Admin {
 }
 
 interface FormData {
-    admin:Admin;
+    admin: Admin;
     password: string;
 }
 
@@ -38,13 +38,13 @@ const CreateAdminPage = () => {
         resolver: zodResolver(validationSchema),
     });
 
-const [error, setError]= useState('')
+    const [error, setError] = useState('')
     const handleRegister = async (values: FieldValues) => {
         const data = modifyPayload(values);
         // console.log(data);
-
+        const res = await registerAdmin(data);
+        console.log(res)
         try {
-            const res = await registerAdmin(data);
 
             if (res?.data?.id) {
                 toast.success(res?.message);
@@ -52,14 +52,14 @@ const [error, setError]= useState('')
             }
             setError(res.message)
         } catch (err: any) {
-            
+
         }
     };
 
-    
 
 
-   
+
+
 
     // const validateForm = () => {
     //     const newErrors = { name: '', email: '', password: '' };
@@ -149,7 +149,7 @@ const [error, setError]= useState('')
                                     type="email"
                                     fullWidth
                                     required
-                                    
+
                                     size='small'
                                     {...register("admin.email")}
                                     error={!!errors.admin?.email}
@@ -170,7 +170,7 @@ const [error, setError]= useState('')
                                     type="password"
                                     fullWidth
                                     required
-                                    
+
                                     size='small'
                                     {...register("password")}
                                     error={!!errors.password}
@@ -190,7 +190,7 @@ const [error, setError]= useState('')
                                     type="text"
                                     fullWidth
                                     required
-                                    
+
                                     size='small'
                                     {...register("admin.contactNumber")}
                                     error={!!errors.admin?.contactNumber}
@@ -210,7 +210,7 @@ const [error, setError]= useState('')
                                     type="text"
                                     fullWidth
                                     required
-                                    
+
                                     size='small'
                                     {...register("admin.address")}
                                     error={!!errors.admin?.address}
@@ -218,15 +218,15 @@ const [error, setError]= useState('')
                                 />
                             </motion.div>
                         </Grid>
-                       
+
                         <Grid item xs={12}>
                             <motion.div
                                 initial={{ scale: 0.9 }}
                                 whileHover={{ scale: 1.05 }}
                                 transition={{ duration: 0.5 }}
                             > <Typography fontWeight={700} color='red' align='center' sx={{
-                            marginBottom:'8px'
-                            }}>{error? error : ''}</Typography>
+                                marginBottom: '8px'
+                            }}>{error ? error : ''}</Typography>
                                 <Button
                                     type="submit"
                                     variant="contained"
@@ -243,7 +243,7 @@ const [error, setError]= useState('')
                                 >
                                     Create Admin
                                 </Button>
-                                
+
                             </motion.div>
                         </Grid>
                     </Grid>

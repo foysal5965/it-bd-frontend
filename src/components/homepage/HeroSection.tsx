@@ -13,17 +13,20 @@ const HeroSection = () => {
         <Container>
             <Box
                 sx={{// Full viewport height
-                    height:'100vh',
+                    // height:'440px',
                     display: 'flex',
                     alignItems: 'center', // Vertically center content
                     justifyContent: 'center', // Horizontally center content
                     background: 'linear-gradient(135deg, rgba(254, 240, 230, 0.1) 30%, rgba(255, 142, 83, 0.1) 90%)', // Gradient background
                     text: 'black',
-                    padding:'20px'
+                    padding:'20px',
+                    marginTop:'20px',
+                    marginBottom:'40px',
+                    borderRadius:'20px'
                     
                 }}
             >
-                <Grid container spacing={4} alignItems="center" justifyContent="center">
+                <Grid container spacing={2} alignItems="center" justifyContent="center">
                     {/* Left Section: Hero Text */}
                     <Grid item xs={12} md={6}>
                         <motion.div
@@ -55,7 +58,7 @@ const HeroSection = () => {
                                     <AnimatedButton name='Browse Course' />
                                     </Link>
 
-                                    <AnimatedButton name='Join Free Seminer' varient='contained' />
+                                    <AnimatedButton name='Join Free Seminer' variant='contained' />
                                 </Box>
                             </Typography>
 

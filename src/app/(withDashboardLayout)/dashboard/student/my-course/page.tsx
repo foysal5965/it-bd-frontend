@@ -11,13 +11,14 @@ import AnimatedButton from '@/lib/animatated/animatedButton';
 const ImageTextCard = () => {
     const query = {}
     const { data: courses, isLoading } = useMyCourseQuery({ ...query })
+    
     if (isLoading) {
         return <Loading />
     }
     return (
         <>
             {
-                courses?.map((course: any) => (
+                courses?.data?.map((course: any) => (
                     <motion.div
                         whileHover={{ scale: 1.02 }}
                         transition={{ duration: 0.3 }}

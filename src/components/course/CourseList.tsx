@@ -30,7 +30,7 @@ const CourseList = ({ courses, isLoading }:any) => {
                   whileHover={{ scale: 0.95 }}
                   initial={{ y: 20 }}
                   animate={{ y: 0 }}
-                  transition={{ type: 'spring', stiffness: 300 }}
+                  transition={{ duration: 0.5 }}
                 >
                   <Card sx={{ maxWidth: 400, borderRadius: '10px', overflow: 'hidden', marginTop: '28px' }}>
                     <CardContent>

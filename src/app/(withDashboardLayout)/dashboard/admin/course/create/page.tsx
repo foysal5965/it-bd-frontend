@@ -13,6 +13,7 @@ import { modifyPayload } from '@/utils/modifyPayload';
 import { toast } from 'sonner';
 import { useAddCourseWithFormDataMutation } from '@/redux/api/courseApi';
 import CourseCategoryField from '@/components/Forms/CourseCategoryFeild';
+import { ErrorResponse } from '../../courseCategory/create/page';
 
 
 // Define Zod Schema
@@ -33,7 +34,7 @@ const CreateCourse = () => {
   const [image, setImage] = useState<File | null>(null); // For image upload
   const [imagePreview, setImagePreview] = useState<string | null>(null); // Image preview
   const [category, setCategory] = useState<{ id: string, categoryName: string } | null>(null);
-
+  const [error, setError] = useState('')
   // Initialize react-hook-form with Zod validation
   const {
     register,
@@ -51,8 +52,7 @@ const CreateCourse = () => {
   // console.log(courseCategories)
   // Update the form value when a category is selected
   const handleCategoryChange = (categoryId: any) => {
-    setValue('categoryId', categoryId); // Update the form with selected categoryId
-    console.log('Selected Category ID:', categoryId); // Log the selected categoryId
+    setValue('categoryId', categoryId); // Update the form with selected 
   };
   // Handle image upload
   const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -80,17 +80,20 @@ const CreateCourse = () => {
     const formData = modifyPayload(values);
     // console.log(formData)
     try {
-      const res = await addCourseWithFormData(formData).unwrap()
-      console.log(res)
-      if (res?.id) {
+      const res = await addCourseWithFormData(formData)
+      
+      if (res?.data?.data?.id) {
         toast.success('Course Created Successfuly')
-        setImage(null);
-        setImagePreview(null);
         reset()
+        setImage(null)
+        setImagePreview(null)
+      } else {
+        const errorResponse = res.error as ErrorResponse;
+        setError(errorResponse?.data || 'An unknown error occurred.');
       }
     } catch (error) {
-      console.error('Error creating category:', error);
-      toast('Something went wrong')
+
+      // toast('Something went wrong')
     }
   };
 
@@ -104,7 +107,9 @@ const CreateCourse = () => {
         <Typography variant="h4" align="center" gutterBottom>
           Create Course
         </Typography>
-
+        <Typography fontWeight={400} color='red' align="center" gutterBottom>
+                    {error? error : ''}
+                </Typography>
         <form onSubmit={handleSubmit(handleCreateCourse)}>
           <Grid container spacing={3}>
             {/* Course Name */}

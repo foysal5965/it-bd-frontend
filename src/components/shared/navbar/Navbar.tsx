@@ -9,10 +9,14 @@ import logo from '../../../assets/logo.png';
 import AnimatedButton from '@/lib/animatated/animatedButton';
 import useUserInfo from '@/hooks/userUserInfo';
 import Loading from '../loading/loading';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { logoutUser } from '@/services/actions/logoutUser';
 import { useRouter } from 'next/navigation';
 import { toast } from 'sonner';
+import { useAuth } from '@/lib/Providers/AuthProvider';
+import { removeUser } from '@/services/authService';
+import AuthButton from '../UI/AuthButton';
+import dynamic from 'next/dynamic';
 
 const Navbar = () => {
     const [isDrawerOpen, setIsDrawerOpen] = useState(false);
@@ -21,6 +25,7 @@ const Navbar = () => {
     const isLoading = useSelector((state: any) => state.loading.isLoading);
     const userInfo = useUserInfo();
     const router = useRouter();
+    const { logout ,user} = useAuth();
 
     // Function to toggle the drawer
     const toggleDrawer = () => {
@@ -34,8 +39,11 @@ const Navbar = () => {
 
     // Function to handle logout
     const handleLogOut = () => {
-        logoutUser(router);
+        removeUser(); // Clear the token from local storage
+        logout(); 
         toast.success('User logged out!!')
+        router.push('/')
+        
     };
 
     // Scroll handler
@@ -67,14 +75,14 @@ const Navbar = () => {
         { text: 'Contact', link: '/contact' },
     ];
 
-    if (userInfo.email) {
+    if (user) {
         menuItems.push({ text: 'Dashboard', link: '/dashboard' });
     }
-    if (userInfo.role ==='student') {
+    if (user?.role ==='student') {
         menuItems.splice(2,1)
         menuItems.push({ text: 'My Courses', link: '/dashboard/student/my-course' });
     }
-
+    const AuthButton = dynamic(() => import('../UI/AuthButton'), { ssr: false })
     return (
         <Container>
             {/* Conditionally show/hide the navbar based on scroll */}
@@ -110,17 +118,7 @@ const Navbar = () => {
                             </Typography>
                         </motion.div>
                     ))}
-                    {isLoading ? (
-                        <Loading />
-                    ) : (
-                        userInfo?.role ? (
-                            <AnimatedButton onClick={handleLogOut} name="Logout" />
-                        ) : (
-                            <Typography sx={{ fontWeight: 700 }} color="inherit">
-                                <Link href="/login">Login</Link>
-                            </Typography>
-                        )
-                    )}
+                     <AuthButton/>
                 </Stack>
 
                 {/* Mobile Menu Icon */}
@@ -160,14 +158,8 @@ const Navbar = () => {
                                     </Typography>
                                 </motion.div>
                             ))}
-                            {isLoading ? (
-                                <Loading />
-                            ) : (
-                                userInfo?.role && (
-                                    <Button sx={{ marginTop: '20px', marginBottom: '20px' }}>Logout</Button>
-                                )
-                            )}
-                            <AnimatedButton name="Browse Course" />
+                            <AuthButton/>
+                            
                         </List>
                     </Box>
                 </Drawer>

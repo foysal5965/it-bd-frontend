@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { Box, Button, Typography, Dialog, DialogTitle, DialogContent, DialogActions, TextField, Container, Stack, IconButton } from '@mui/material';
+'use client'
+import { Box, Button, Typography, Dialog, DialogContent, Stack, IconButton, TextField, Container, CircularProgress } from '@mui/material';
 import { motion } from 'framer-motion';
 import CloseSharpIcon from '@mui/icons-material/CloseSharp';
 import { useAddStudentEnrolledCourseMutation } from '@/redux/api/studentErolledCourseApi';
@@ -9,38 +9,32 @@ import { useInitialPaymentMutation } from '@/redux/api/paymentApi';
 import { useRouter } from 'next/navigation';
 
 const AdmissionModal = ({ open, handleClose, userInfo, courseInfo }: any) => {
-  // console.log(courseInfo)
-  const router = useRouter()
-  const {
-    register,
-    handleSubmit,
-    setValue, control,
-    formState: { errors },
-    reset
-  } = useForm();
-  const [addStudentEnrolledCourse, isLoading] = useAddStudentEnrolledCourseMutation();
-  const [initialPayment] = useInitialPaymentMutation()
+  const router = useRouter();
+  const { register, handleSubmit, formState: { errors } } = useForm();
+
+  const [addStudentEnrolledCourse, { isLoading: enrolledLoading }] = useAddStudentEnrolledCourseMutation();
+  const [initialPayment, { isLoading: initLoading }] = useInitialPaymentMutation();
+
   const handelEnrollCourse = async () => {
     const enrolledCourseData = {
       studentId: userInfo.id,
-      courseId: courseInfo.id
-    }
-
+      courseId: courseInfo.id,
+    };
 
     try {
       const res = await addStudentEnrolledCourse(enrolledCourseData).unwrap();
-      // console.log(res)
-      if (res.id) {
-        toast.success('Enrolled successfuly')
-        const response = await initialPayment(res.id).unwrap();
-        if (response.paymentUrl) {
-          router.push(response.paymentUrl)
+      if (res?.data?.id) {
+        toast.success('Enrolled successfully');
+        const response = await initialPayment(res?.data?.id).unwrap();
+        if (response?.data?.paymentUrl) {
+          router.push(response?.data?.paymentUrl);
         }
       }
     } catch {
-
+      toast.error('Enrollment failed');
     }
-  }
+  };
+
   return (
     <Dialog
       open={open}
@@ -55,17 +49,11 @@ const AdmissionModal = ({ open, handleClose, userInfo, courseInfo }: any) => {
         transition: { type: 'spring', stiffness: 300 },
       }}
     >
-
       <DialogContent sx={{ backgroundColor: '#f3f4f6' }}>
-        <Stack sx={{
-          position: 'absolute',
-          top: '15px',  // adjust as needed
-          right: '15px'
-        }}>
+        <Stack sx={{ position: 'absolute', top: '15px', right: '15px' }}>
           <IconButton onClick={handleClose}>
             <CloseSharpIcon />
           </IconButton>
-
         </Stack>
         <Container
           component={motion.div}
@@ -73,15 +61,8 @@ const AdmissionModal = ({ open, handleClose, userInfo, courseInfo }: any) => {
           initial={{ opacity: 0, y: 50 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.7, ease: 'easeInOut' }}
-
-          sx={{
-            alignItems: 'center',
-            justifyContent: 'center',
-            // mt: 2,
-            padding: '10px',
-          }}
+          sx={{ alignItems: 'center', justifyContent: 'center', padding: '10px' }}
         >
-
           <Typography
             variant="h4"
             component={motion.div}
@@ -99,83 +80,43 @@ const AdmissionModal = ({ open, handleClose, userInfo, courseInfo }: any) => {
             initial={{ opacity: 0, scale: 0.8 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.7, ease: 'easeOut' }}
-            sx={{
-              width: '100%',
-              mt: 2,
-              display: 'flex',
-              flexDirection: 'column',
-              gap: 1,
-            }}
+            sx={{ width: '100%', mt: 2, display: 'flex', flexDirection: 'column', gap: 1 }}
           >
-            <motion.div initial={{ x: -100, opacity: 0 }} animate={{ x: 0, opacity: 1 }} transition={{ delay: 0.4, duration: 0.5 }}>
-              <TextField
-                label="Name"
-                variant="outlined"
-                type="text"
-                size='small'
-                fullWidth
-                defaultValue={userInfo.name}
-              // {...register("email")}
-              // error={!!errors.email}
-              // helperText={errors.email?.message}
-              />
-            </motion.div>
+            <TextField
+              label="Name"
+              variant="outlined"
+              type="text"
+              size="small"
+              fullWidth
+              defaultValue={userInfo.name}
+            />
+            <TextField
+              label="Phone Number"
+              variant="outlined"
+              type="text"
+              size="small"
+              fullWidth
+              defaultValue={userInfo.contactNumber}
+            />
+            <TextField
+              label="Email"
+              type="email"
+              variant="outlined"
+              size="small"
+              fullWidth
+              defaultValue={userInfo.email}
+            />
+            <TextField
+              label="Your wanted course"
+              type="text"
+              variant="outlined"
+              size="small"
+              fullWidth
+              defaultValue={courseInfo.courseName}
+            />
 
-            {/* Email Input */}
-            <motion.div initial={{ x: -100, opacity: 0 }} animate={{ x: 0, opacity: 1 }} transition={{ delay: 0.4, duration: 0.5 }}>
-              <TextField
-                label="Phone Number"
-                variant="outlined"
-                type="text"
-                size='small'
-                fullWidth
-                defaultValue={userInfo.contactNumber}
-              // {...register("email")}
-              // error={!!errors.email}
-              // helperText={errors.email?.message}
-              />
-            </motion.div>
-
-            {/* Password Input */}
-            <motion.div initial={{ x: -100, opacity: 0 }} animate={{ x: 0, opacity: 1 }} transition={{ delay: 0.6, duration: 0.5 }}>
-              <TextField
-                label="Email"
-                type="email"
-                variant="outlined"
-                size='small'
-                fullWidth
-                defaultValue={userInfo.email}
-              // {...register("password")}
-              // error={!!errors.password}
-              // helperText={errors.password?.message}
-              />
-            </motion.div>
-            <motion.div initial={{ x: -100, opacity: 0 }} animate={{ x: 0, opacity: 1 }} transition={{ delay: 0.6, duration: 0.5 }}>
-              <TextField
-                label="Your wanted course"
-                type="text"
-                variant="outlined"
-                size='small'
-                fullWidth
-                defaultValue={courseInfo.courseName}
-              // {...register("password")}
-              // error={!!errors.password}
-              // helperText={errors.password?.message}
-              />
-            </motion.div>
-
-
-
-
-
-            {/* Register Button */}
+            {/* Enroll Now Button */}
             <Button
-              component={motion.button}
-              type="submit"
-              variant="contained"
-
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
               sx={{
                 mt: 2,
                 background: 'linear-gradient(45deg, #FE6B8B 30%, #FF8E53 90%)',
@@ -184,28 +125,24 @@ const AdmissionModal = ({ open, handleClose, userInfo, courseInfo }: any) => {
                 fontWeight: 'bold',
                 borderRadius: '5px',
               }}
-              onClick={handleClose}
+              component={motion.button}
+              type="submit"
+              variant="contained"
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+              disabled={enrolledLoading || initLoading}  // Disable button when loading
             >
-              Enroll Now
+              {enrolledLoading || initLoading ? (
+                <CircularProgress size={24} sx={{ color: '#fff' }} />
+              ) : (
+                'Enroll Now'
+              )}
             </Button>
-
-
-
           </Box>
-
-
         </Container>
-
       </DialogContent>
-      {/* <DialogActions sx={{ backgroundColor: '#e3f2fd' }}>
-        <Button onClick={handleClose} color="error">
-          Cancel
-        </Button>
-        <Button variant="contained" color="primary" onClick={handleClose}>
-          Enroll
-        </Button>
-      </DialogActions> */}
     </Dialog>
   );
 };
-export default AdmissionModal
+
+export default AdmissionModal;

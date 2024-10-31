@@ -2,31 +2,31 @@
 
 import { FieldValues } from 'react-hook-form';
 import setAccessToken from './setAccessToken';
-import { getNewAccessToken } from '../authService';
-import axios from 'axios';
-import { setToLocalStorage } from '@/utils/local-storage';
-import { authKey } from '@/constants/authkey';
 
 export const userLogin = async (data: FieldValues) => {
 
    const res = await fetch(
-      `${process.env.NEXT_PUBLIC_BACKEND_API_URL}/auth/login`,
+      `http://localhost:3000/api/v1/auth/login`,
       {
          method: 'POST',
          headers: {
             'Content-Type': 'application/json',
          },
          body: JSON.stringify(data),
-
+         credentials: 'include',
       }
    );
-   const userInfo = await res.json();
 
+   const userInfo = await res.json()
+   
 
-   if (userInfo.data.accessToken) {
-      setAccessToken(userInfo.data.accessToken);
-      
+   if (userInfo?.data?.accessToken) {
+      setAccessToken(userInfo.data.accessToken, {
+         redirect: '/dashboard',
+      });
+   } else {
+      return userInfo
    }
 
-   return userInfo;
+   return userInfo
 };
