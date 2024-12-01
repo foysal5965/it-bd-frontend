@@ -9,7 +9,6 @@ import { useInitialPaymentMutation } from '@/redux/api/paymentApi';
 import { useRouter } from 'next/navigation';
 
 const SeminerModal = ({ open, handleClose, userInfo, courseInfo }: any) => {
-  // console.log(courseInfo)
   const router = useRouter()
   const {
     register,
@@ -29,7 +28,6 @@ const SeminerModal = ({ open, handleClose, userInfo, courseInfo }: any) => {
 
     try {
       const res = await addStudentEnrolledCourse(enrolledCourseData).unwrap();
-      // console.log(res)
       if (res.id) {
         toast.success('Enrolled successfuly')
         const response = await initialPayment(res.id).unwrap();

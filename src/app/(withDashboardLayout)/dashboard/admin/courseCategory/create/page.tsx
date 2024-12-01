@@ -47,7 +47,7 @@ const CreateCourseCategory = () => {
             try {
                 // Call Redux mutation to add the course category
                 const res = await addCourseCategoryWithFormData(formData)
-                // console.log(res)
+              
                 if (res?.data?.data?.id) {
                     toast.success('Category created Successfuly')
                     // Reset form after success

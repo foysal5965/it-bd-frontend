@@ -57,9 +57,9 @@ const LoginPage = () => {
     const handleRegister = async (values: FieldValues) => {
         const res = await userLogin(values);
         try {
-            console.log(res)
+          
             if (res?.data?.accessToken) {
-                // console.log(res)
+                
                 toast.success(res.message);
                 storeUserInfo({ accessToken: res?.data?.accessToken });
                 login(res.data.accessToken);

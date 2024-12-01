@@ -41,9 +41,9 @@ const CreateAdminPage = () => {
     const [error, setError] = useState('')
     const handleRegister = async (values: FieldValues) => {
         const data = modifyPayload(values);
-        // console.log(data);
+   
         const res = await registerAdmin(data);
-        console.log(res)
+      
         try {
 
             if (res?.data?.id) {

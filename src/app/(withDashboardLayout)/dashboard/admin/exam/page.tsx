@@ -42,7 +42,7 @@ const ExamTable: React.FC = () => {
     };
 const handleUpdateExamStatus = async({ id, status }: { id: string; status: string })=>{
     const response = await updateExamStatus({id, status})
-    console.log(response)
+   
 }
     return (
         <>

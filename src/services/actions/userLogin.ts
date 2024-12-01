@@ -6,7 +6,7 @@ import setAccessToken from './setAccessToken';
 export const userLogin = async (data: FieldValues) => {
 
    const res = await fetch(
-      `http://localhost:3000/api/v1/auth/login`,
+      `https://itbd-backend-767dz9u66-foysal5965s-projects.vercel.app/api/v1/auth/login`,
       {
          method: 'POST',
          headers: {
@@ -18,14 +18,14 @@ export const userLogin = async (data: FieldValues) => {
    );
 
    const userInfo = await res.json()
-   
 
-   if (userInfo?.data?.accessToken) {
+
+   if (userInfo.success === true) {
+      const passwordChangeRequired = userInfo.data.needPasswordChange;
       setAccessToken(userInfo.data.accessToken, {
          redirect: '/dashboard',
+         passwordChangeRequired,
       });
-   } else {
-      return userInfo
    }
 
    return userInfo

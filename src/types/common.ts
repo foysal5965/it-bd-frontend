@@ -81,3 +81,13 @@ export type StudentEnrolledCourse = {
   // Other fields related to the enrolled course as necessary
 };
 
+export type IContest ={
+  id:string,
+  name:string,
+  startTime:string,
+  endTime:string,
+  description:string,
+  rules:string,
+  rewards:string
+}
+

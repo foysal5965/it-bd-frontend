@@ -4,6 +4,9 @@ import { useEffect, useState } from 'react';
 import {
     Box, CssBaseline, Drawer, List, ListItem, ListItemIcon, ListItemText, AppBar, Toolbar, Typography, IconButton, Collapse,
     Button,
+    Stack,
+    Badge,
+    Avatar,
 } from '@mui/material';
 import { Class, Group, Inbox, Menu, Person, School, ExpandLess, ExpandMore, Category, Create, Update } from '@mui/icons-material';
 import { motion } from 'framer-motion';
@@ -17,6 +20,9 @@ import AnimatedButton from '@/lib/animatated/animatedButton';
 import { logoutUser } from '@/services/actions/logoutUser';
 import SupervisorAccountIcon from '@mui/icons-material/SupervisorAccount';
 import { useAuth } from '@/lib/Providers/AuthProvider';
+import NotificationsNoneIcon from "@mui/icons-material/NotificationsNone";
+import AccountMenu from './dashboard/AccountMenu/AccountMenu';
+import { useGetSingleUserQuery } from '@/redux/api/userApi';
 
 const drawerWidth = 240;
 
@@ -24,6 +30,7 @@ const menuItems: any = {
     student: [
         { text: 'My Courses', icon: <Class />, href: '/dashboard/student/my-course' },
         { text: 'Exams', icon: <Class />, href: '/dashboard/student/exam' },
+        { text: 'Results', icon: <Class />, href: '/dashboard/student/result' },
         {
             text: 'Profile',
             icon: <Person />,
@@ -54,6 +61,8 @@ const menuItems: any = {
             ]
         },
         { text: 'Students', icon: <Group />, href: '/dashboard/admin/student' },
+        { text: 'Contests', icon: <Group />, href: '/dashboard/admin/contest' },
+        { text: 'Contest Participants', icon: <Group />, href: '/dashboard/admin/contest-participants' },
         {
             text: 'Profile',
             icon: <Person />,
@@ -75,7 +84,7 @@ const menuItems: any = {
             text: 'Exam', icon: <Category />, submenu: [
                 { text: 'Exams', icon: <Category />, href: '/dashboard/admin/exam' },
                 { text: 'Create Exam', icon: <Category />, href: '/dashboard/admin/exam/create' },
-                
+
             ]
         },
         {
@@ -91,6 +100,8 @@ const menuItems: any = {
             ]
         },
         { text: 'Students', icon: <Group />, href: '/dashboard/admin/student' },
+        { text: 'Contests', icon: <Group />, href: '/dashboard/admin/contest' },
+        { text: 'Contest Participants', icon: <Group />, href: '/dashboard/admin/contest-participants' },
         {
             text: 'Profile',
             icon: <Person />,
@@ -111,8 +122,9 @@ const DashboardLayout = ({ children }: { children: React.ReactNode }) => {
     const [openMenuIndex, setOpenMenuIndex] = useState<number | null>(null); // Track the open menu index for dropdown
     const [showLogo, setShowLogo] = useState(true);
     const [lastScrollPos, setLastScrollPos] = useState(0);
-    const {logout,user} = useAuth()
-   
+    const { logout, user } = useAuth()
+    const { data } = useGetSingleUserQuery({});
+
     const handleLinkClick = () => {
         setMobileOpen(false);
     };
@@ -266,6 +278,42 @@ const DashboardLayout = ({ children }: { children: React.ReactNode }) => {
                                 <Menu />
                             </IconButton>
                             <Link href='/'><Image src={logo} alt='logo' /></Link>
+                            <Box
+                                sx={{
+                                    display: "flex",
+                                    alignItems: "center",
+                                    justifyContent: "space-between",
+                                    width: "100%",
+                                }}
+                            >
+                                <Box>
+                                    <Typography
+                                        variant="body2"
+                                        noWrap
+                                        component="div"
+                                        sx={{ color: "rgba(11, 17, 52, 0.6)" }}
+                                    >
+                                        Hi, {isLoading ? "Loading..." : data?.data?.name}
+                                    </Typography>
+                                    <Typography
+                                        variant="h6"
+                                        noWrap
+                                        component="div"
+                                        sx={{ color: "primary.main" }}
+                                    >
+                                        Welcome to IDBD Services!
+                                    </Typography>
+                                </Box>
+                                <Stack direction="row" gap={3}>
+                                    <Badge badgeContent={1} color="primary">
+                                        <IconButton sx={{ background: "#ffffff" }}>
+                                            <NotificationsNoneIcon color="action" />
+                                        </IconButton>
+                                    </Badge>
+                                    <Avatar alt={data?.name} src={data?.data?.profilePhoto} />
+                                    <AccountMenu />
+                                </Stack>
+                            </Box>
                         </Toolbar>
                     </AppBar>
                 )

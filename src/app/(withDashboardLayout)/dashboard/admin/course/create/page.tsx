@@ -49,7 +49,7 @@ const CreateCourse = () => {
   const query: Record<string, any> = {};
   const { data: courseCategories, isLoading } = useCourseCategoryQuery({ ...query })
   const [addCourseWithFormData, { isLoading: addIsLoading }] = useAddCourseWithFormDataMutation()
-  // console.log(courseCategories)
+  
   // Update the form value when a category is selected
   const handleCategoryChange = (categoryId: any) => {
     setValue('categoryId', categoryId); // Update the form with selected 
@@ -78,7 +78,7 @@ const CreateCourse = () => {
       file: image
     }
     const formData = modifyPayload(values);
-    // console.log(formData)
+    
     try {
       const res = await addCourseWithFormData(formData)
       
@@ -92,8 +92,6 @@ const CreateCourse = () => {
         setError(errorResponse?.data || 'An unknown error occurred.');
       }
     } catch (error) {
-
-      // toast('Something went wrong')
     }
   };
 

@@ -33,7 +33,7 @@ const EditProfilePage = () => {
     const router = useRouter()
     const [updateMyProfile, { isLoading }] = useUpdateMYProfileMutation()
     const logedinUserInfo = useUserInfo();
-    console.log(logedinUserInfo)
+
     let adminquery = {};
     let studentQuery = {};
 
@@ -47,10 +47,7 @@ const EditProfilePage = () => {
     }
 
     const { data: adminData, isLoading: isAdminLoading } = useAdminQuery({ ...adminquery });
-    // console.log(adminData)
     const { data: studentData, isLoading: isStudentLoading } = useStudentQuery({ ...studentQuery });
-
-    // console.log(studentData)
     // Loading state
     if (isAdminLoading || isStudentLoading) {
         return <Loading />;
@@ -105,7 +102,6 @@ const EditProfilePage = () => {
         } catch {
 
         }
-        //    console.log(data)
     };
 
     return (

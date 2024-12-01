@@ -78,6 +78,7 @@ const Navbar = () => {
     if (user) {
         menuItems.push({ text: 'Dashboard', link: '/dashboard' });
     }
+    //@ts-ignore
     if (user?.role ==='student') {
         menuItems.splice(2,1)
         menuItems.push({ text: 'My Courses', link: '/dashboard/student/my-course' });
@@ -97,9 +98,10 @@ const Navbar = () => {
                 }}
             >
                 {/* Logo */}
-                <Typography variant="h6" component={Link} href="/">
+                <Typography variant="h6" fontSize={30} component={Link} href="/">
                     <motion.div whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.9 }}>
-                        <Image src={logo} alt="logo" />
+                        {/* <Image src={logo} alt="logo" /> */}
+                        It Bangladesh
                     </motion.div>
                 </Typography>
 

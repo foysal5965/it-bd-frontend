@@ -84,7 +84,7 @@ const CreateExam = () => {
 
         try {
             const response = await addExamWithFormData(formData);
-            // console.log(response)
+            
             if (response.data.data.id) {
                 toast.success(response.data.message)
                 router.push('/dashboard/admin/exam')
@@ -92,7 +92,7 @@ const CreateExam = () => {
             if (response.error) {
                 console.error("Failed to create exam:", response.error);
             } else {
-                console.log("Exam created successfully!");
+              
             }
         } catch (error) {
             console.error("Failed to create exam:", error);

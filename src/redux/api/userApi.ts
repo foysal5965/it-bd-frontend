@@ -23,11 +23,19 @@ export const authApi = baseApi.injectEndpoints({
         },
         providesTags: [tagTypes.course]
     }),
+    getSingleUser: build.query({
+        query: () => ({
+          url: "/user/me",
+          method: "GET",
+        }),
+        providesTags: [tagTypes.user],
+      }),
       
       
    }),
 });
 
 export const {
-   useUserQuery
+   useUserQuery,
+   useGetSingleUserQuery
 } = authApi;

@@ -39,7 +39,7 @@ const SingleExamView: React.FC = ({ params }:any) => {
 const query = {id:params.id}
    const {data, isLoading}= useGetSingleExamQuery(params.id)
    
-   console.log(data?.data)
+ 
    
 
     // Motion variant for animations

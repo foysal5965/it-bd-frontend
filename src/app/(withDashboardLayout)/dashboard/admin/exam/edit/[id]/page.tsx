@@ -128,7 +128,7 @@ const UpdateExam = ({ params }: any) => {
     };
 
     const handleUpdateExam = async (data: FieldValues) => {
-        // console.log(data)
+       
         const formData = new FormData();
         formData.append("courseId", data.courseId);
         formData.append("title", data.title);

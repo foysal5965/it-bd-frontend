@@ -58,7 +58,7 @@ const ChangePassword = () => {
                 setError('Confirm password is not correct!')
             } else {
                 const res = await changePassword(changePasswordData)
-                // console.log(res)
+    
                 if (res?.data) {
                     toast.success(res?.data?.data?.message)
                     reset();

@@ -6,7 +6,9 @@ export enum tagTypes {
     courseCategory='course-category',
     studentEnrolledCourse='student-enrolled-corse',
     payment ='payment',
-    exam='exam'
+    exam='exam',
+    result = 'result',
+    contest = 'contest'
 }
 
 export const tagTypesList=[
@@ -16,5 +18,7 @@ export const tagTypesList=[
     tagTypes.courseCategory,
     tagTypes.studentEnrolledCourse,
     tagTypes.payment,
-    tagTypes.exam
+    tagTypes.exam,
+    tagTypes.result,
+    tagTypes.contest
 ]

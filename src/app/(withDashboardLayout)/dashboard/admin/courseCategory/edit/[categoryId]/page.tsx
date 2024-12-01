@@ -55,7 +55,7 @@ const CourseCategoryUpdate = ({ params }: TParams) => {
             try {
                 // Call Redux mutation to add the course category
                 // const res = await useUpdateCourseCategoryMutation({id, formData})
-                // console.log(res)
+                
                 // // if (res?.data?.id) {
                 // //     toast.success('Category created Successfuly')
                 // //     // Reset form after success

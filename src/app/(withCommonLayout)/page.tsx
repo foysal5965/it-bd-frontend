@@ -1,4 +1,5 @@
 'use client'
+import ContestCarousel from "@/components/homepage/ContestCarosuel";
 import { Category } from "@/components/homepage/CourseCategory/Category";
 import CourseCategory from "@/components/homepage/CourseCategory/CourseCategory";
 import HeroSection from "@/components/homepage/HeroSection";
@@ -15,6 +16,7 @@ const HomePage = () => {
   return (
     <>
       <HeroSection/>
+      <ContestCarousel/>
       <Category/>
       <SolutionSection/>
       <SeminerSection/>

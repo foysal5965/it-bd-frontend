@@ -59,7 +59,7 @@ const RegistrationForm = () => {
 
     const handleRegister = async (values: FieldValues) => {
         const data = modifyPayload(values);
-        // console.log(data);
+        
 
         try {
             const res = await registerStudent(data);
