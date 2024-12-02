@@ -19,7 +19,7 @@ export default function RootLayout({
 }) {
   return (
     <Providers>
-      <html lang="en">
+      <html lang="en" suppressHydrationWarning>
         <body className={inter.className}>
         {/* <DisableInspectWrapper /> */}
           <AppRouterCacheProvider> <><Toaster position='top-center' />{children}</></AppRouterCacheProvider>

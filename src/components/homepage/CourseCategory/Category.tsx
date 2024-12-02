@@ -16,11 +16,11 @@ export const Category = () => {
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
-        fetch('https://itbd-backend-767dz9u66-foysal5965s-projects.vercel.app/api/v1/category')
+        fetch('https://itbd-backend.vercel.app/api/v1/category')
             .then((response) => response.json())
             .then((data: Props[]) => {
                 setData(data);
-                // setLoading(false);
+                setLoading(false);
             });
     }, []);
     if (loading) return <Loading/>;

@@ -104,6 +104,16 @@ const ForgetPasswordPage = () => {
               Check your email for the reset link
             </Typography>
             <Button
+            sx={{
+              background: 'linear-gradient(45deg, #FE6B8B 30%, #FF8E53 90%)', // Gradient color
+              borderRadius: '15px', // Rounded button
+              padding: '10px 20px',
+              color: '#fff', // Text color
+              fontSize: '15px',
+              fontWeight: 'bold',
+              mt:2 // Initial shadow
+              
+            }}
               variant="contained"
               color="primary"
               onClick={() => setSubmitted(false)}
@@ -111,7 +121,7 @@ const ForgetPasswordPage = () => {
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
               transition={{ type: 'spring', stiffness: 300 }}
-              sx={{ mt: 2 }}
+              
             >
               Resend Email
             </Button>

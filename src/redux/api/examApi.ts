@@ -94,7 +94,7 @@ const token = getFromLocalStorage(authKey);  // Get the token from localStorage 
 export const examUpdateApi = createApi({
   reducerPath: 'examApi',
   baseQuery: fetchBaseQuery({
-    baseUrl: "http://localhost:3000/api/v1",   // Base URL of your API
+    baseUrl: "https://itbd-backend-citdwjy8c-foysal5965s-projects.vercel.app/api/v1",   // Base URL of your API
     prepareHeaders: (headers) => {
       if (token) {
         headers.set('Authorization', `${token}`);  // Set the Bearer token in the Authorization header

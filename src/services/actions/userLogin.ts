@@ -6,7 +6,7 @@ import setAccessToken from './setAccessToken';
 export const userLogin = async (data: FieldValues) => {
 
    const res = await fetch(
-      `https://itbd-backend-767dz9u66-foysal5965s-projects.vercel.app/api/v1/auth/login`,
+      `https://itbd-backend.vercel.app/api/v1/auth/login`,
       {
          method: 'POST',
          headers: {

@@ -23,6 +23,7 @@ const AutoFileUploader = ({
   return (
     <Box>
       <Button
+      
         component="label"
         role={undefined}
         variant={variant}

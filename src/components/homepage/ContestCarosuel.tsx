@@ -9,13 +9,13 @@ import image1 from "@/assets/contest/guy-071024.png";
 import image2 from "@/assets/contest/slide2.png";
 
 const ContestCarousel = ({params}:any) => {
-  console.log(params)
+
   const [currentIndex, setCurrentIndex] = useState(0);
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetch("https://itbd-backend-767dz9u66-foysal5965s-projects.vercel.app/api/v1/contest")
+    fetch("https://itbd-backend.vercel.app/api/v1/contest")
       .then((response) => response.json())
       .then((data) => {
         setData(data.data);

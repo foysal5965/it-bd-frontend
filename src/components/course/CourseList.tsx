@@ -72,7 +72,15 @@ const CourseList = ({ courses, isLoading }:any) => {
                         <Typography sx={{ fontWeight: '700', fontSize: '16px' }}>
                           Course Fee {course.courseFee} BDT
                         </Typography>
-                        <Link href={`courses/${course.id}`}><Button disabled={isLoading} variant='outlined'>Enroll Now</Button></Link>
+                        <Link href={`courses/${course.id}`}><Button disabled={isLoading} variant='outlined' sx={{
+                background: 'linear-gradient(45deg, #FE6B8B 30%, #FF8E53 90%)', // Gradient color
+                borderRadius: '15px', // Rounded button
+                padding: '10px 20px',
+                color: '#fff', // Text color
+                fontSize: '15px',
+                fontWeight: 'bold', // Initial shadow
+                
+              }}>Enroll Now</Button></Link>
                         {/* <AnimatedButton variant='outlined' name='Enroll Now'/> */}
                       </Box>
                     </CardContent>

@@ -225,7 +225,15 @@ const router = useRouter()
             alt="Participant Picture"
             sx={{ width: 56, height: 56 }}
           />
-          <Button variant="contained" component="label">
+          <Button variant="contained" sx={{
+                background: 'linear-gradient(45deg, #FE6B8B 30%, #FF8E53 90%)', // Gradient color
+                borderRadius: '15px', // Rounded button
+                padding: '10px 20px',
+                color: '#fff', // Text color
+                fontSize: '15px',
+                fontWeight: 'bold', // Initial shadow
+                
+              }} component="label">
             Upload Picture
             <input
               type="file"
@@ -253,8 +261,13 @@ const router = useRouter()
           variant="contained"
           size="large"
           sx={{
-            backgroundColor: "primary.main",
-            "&:hover": { backgroundColor: "primary.dark" },
+            background: 'linear-gradient(45deg, #FE6B8B 30%, #FF8E53 90%)', // Gradient color
+            borderRadius: '15px', // Rounded button
+            padding: '10px 20px',
+            color: '#fff', // Text color
+            fontSize: '15px',
+            fontWeight: 'bold', // Initial shadow
+            
           }}
         >
           Submit
