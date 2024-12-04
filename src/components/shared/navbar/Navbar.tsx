@@ -47,25 +47,25 @@ const Navbar = () => {
     };
 
     // Scroll handler
-    const handleScroll = () => {
-        if (window.scrollY > lastScrollY) {
-            // Scrolling down
-            setShowNavbar(false);
-        } else {
-            // Scrolling up
-            setShowNavbar(true);
-        }
-        setLastScrollY(window.scrollY);
-    };
+    // const handleScroll = () => {
+    //     if (window.scrollY > lastScrollY) {
+    //         // Scrolling down
+    //         setShowNavbar(false);
+    //     } else {
+    //         // Scrolling up
+    //         setShowNavbar(true);
+    //     }
+    //     setLastScrollY(window.scrollY);
+    // };
 
     // Set up scroll event listener
-    useEffect(() => {
-        window.addEventListener('scroll', handleScroll);
+    // useEffect(() => {
+    //     window.addEventListener('scroll', handleScroll);
 
-        return () => {
-            window.removeEventListener('scroll', handleScroll);
-        };
-    }, [lastScrollY]);
+    //     return () => {
+    //         window.removeEventListener('scroll', handleScroll);
+    //     };
+    // }, [lastScrollY]);
 
     const menuItems = [
         { text: 'Home', link: '/' },

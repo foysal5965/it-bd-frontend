@@ -20,6 +20,7 @@ const ImageTextCard = () => {
             {
                 courses?.data?.map((course: any) => (
                     <motion.div
+                    key={course.id}
                         whileHover={{ scale: 1.02 }}
                         transition={{ duration: 0.3 }}
                         style={{ maxWidth: '900px', margin: '20px auto' }}

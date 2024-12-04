@@ -241,7 +241,7 @@ const UpdateExam = ({ params }: any) => {
                                             label={`Option ${optIndex + 1}`}
                                             variant="outlined"
                                             fullWidth
-                                            value={option.optionText} // Change from defaultValue to value
+                                            value={option} // Change from defaultValue to value
                                             onChange={(e) => handleOptionChange(qIndex, optIndex, e.target.value)}
                                         />
                                     </Grid>

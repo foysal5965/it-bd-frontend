@@ -75,7 +75,7 @@ const query = {id:params.id}
                         <Divider />
                         <List>
                             {question.options.map((option:any) => (
-                                <ListItem >
+                                <ListItem key={option.id} >
                                     <ListItemIcon>
                                         <CheckIcon />
                                     </ListItemIcon>

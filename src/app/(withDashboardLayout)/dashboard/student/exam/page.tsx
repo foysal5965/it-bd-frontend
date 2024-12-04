@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import {
     Container,
     Typography,
@@ -19,6 +19,7 @@ import { motion } from 'framer-motion';
 import { useRouter } from 'next/navigation';
 import { useGetMyExamQuery } from '@/redux/api/examApi';
 import { useAddResultMutation } from '@/redux/api/resultApi';
+import Image from 'next/image';
 
 const ExamPage = () => {
     const router = useRouter();
@@ -129,13 +130,14 @@ const ExamPage = () => {
         };
     }, [examStarted, disqualified]);
 
-    const disqualifyUser = () => {
+    // Memoize disqualifyUser function
+    const disqualifyUser = useCallback(() => {
         setDisqualified(true);
         localStorage.setItem(`disqualified_${examId}`, 'true');
         localStorage.removeItem(`examStartTime_${examId}`);
         alert('You have been disqualified for leaving the exam!');
         setExamSubmitted(true);
-    };
+    }, [examId]);
 
     const formatTime = (seconds:any) => {
         const minutes = Math.floor(seconds / 60);
@@ -169,41 +171,29 @@ const ExamPage = () => {
     };
     
 
-    const handleSubmit = async () => {
-        
-    
-        // Calculate the score before marking the exam as submitted
-        const calculatedScore = calculateScore();
-        //@ts-ignore
-        setScore(calculatedScore);  // Update the score in the state
-    
-        try {
-            // Submit the result to the API
-            const resultData = {
-                examId: data.data.id,
-                score: calculatedScore,
-            };
-            await addResult(resultData).unwrap();
-    
-            // Open the result modal to show the score
-            setOpenResultModal(true);
-    
-            // Clear the exam-related data from localStorage
-            localStorage.removeItem(`examStartTime_${examId}`);
-            localStorage.removeItem(`examStarted_${examId}`);
-            localStorage.removeItem(`disqualified_${examId}`);
-            // if (examSubmitted) return;
-            // Redirect to the result page
-            router.push(`/dashboard/student/result`);
-    
-            // Mark the exam as submitted *after* the result is processed
-            setExamSubmitted(true);
-            localStorage.setItem(`examSubmitted_${examId}`, 'true');  // Mark exam as submitted
-    
-        } catch (error) {
-            console.error('Error submitting result:', error);
-        }
-    };
+    const handleSubmit = useCallback(async () => {
+    const calculatedScore = calculateScore();
+    //@ts-ignore
+    setScore(calculatedScore);
+
+    try {
+        const resultData = {
+            examId: data.data.id,
+            score: calculatedScore,
+        };
+        await addResult(resultData).unwrap();
+        setOpenResultModal(true);
+        localStorage.removeItem(`examStartTime_${examId}`);
+        localStorage.removeItem(`examStarted_${examId}`);
+        localStorage.removeItem(`disqualified_${examId}`);
+        router.push(`/dashboard/student/result`);
+        setExamSubmitted(true);
+        localStorage.setItem(`examSubmitted_${examId}`, 'true');
+    } catch (error) {
+        console.error('Error submitting result:', error);
+    }
+}, [addResult, data?.data?.id, examId, router]);
+
     
     
 
@@ -269,7 +259,9 @@ const ExamPage = () => {
                                 {question.questionText}
                             </Typography>
                             {question.image && (
-                                <img
+                                <Image
+                                width={300}
+                                height={300}
                                     src={question.image}
                                     alt="Question visual"
                                     style={{

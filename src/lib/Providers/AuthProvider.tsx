@@ -1,7 +1,9 @@
 'use client';
+import { deleteCookies } from '@/services/actions/deleteCookies';
 import { decodedToken } from '@/utils/jwt';
 import { strict } from 'assert';
 import { JwtPayload } from 'jwt-decode';
+import { cookies } from 'next/headers';
 import { createContext, useContext, useState, ReactNode, useEffect } from 'react';
 
 interface AuthContextType {
@@ -27,6 +29,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     // On initial load, check if user is already logged in
     const authToken = localStorage.getItem('accessToken');
     if (authToken) {
+      //@ts-ignore
       const decodedData: JwtPayload & { role: any } = decodedToken(authToken);
       const userInfo: any = {
          ...decodedData,
@@ -43,6 +46,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
   const logout = () => {
     localStorage.removeItem('accessToken');
+    deleteCookies(['accessToken'])
     setUser(null);
   };
 

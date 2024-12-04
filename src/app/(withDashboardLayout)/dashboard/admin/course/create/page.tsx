@@ -14,6 +14,7 @@ import { toast } from 'sonner';
 import { useAddCourseWithFormDataMutation } from '@/redux/api/courseApi';
 import CourseCategoryField from '@/components/Forms/CourseCategoryFeild';
 import { ErrorResponse } from '../../courseCategory/create/page';
+import Image from 'next/image';
 
 
 // Define Zod Schema
@@ -227,7 +228,8 @@ const CreateCourse = () => {
                 borderRadius={2}
               >
                 {imagePreview ? (
-                  <img
+                  <Image
+                  width={250} height={250}
                     src={imagePreview}
                     alt="Preview"
                     style={{ width: '100%', height: 'auto', marginBottom: 16 }}

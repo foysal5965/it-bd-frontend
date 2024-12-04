@@ -8,26 +8,34 @@ import AnimatedButton from "@/lib/animatated/animatedButton";
 import image1 from "@/assets/contest/guy-071024.png";
 import image2 from "@/assets/contest/slide2.png";
 
-const ContestCarousel = ({params}:any) => {
+// Define the structure of a contest
+interface Contest {
+  id: string;
+  name: string;
+  description: string;
+  startTime: string; // ISO string for DateTime
+  endTime: string; // ISO string for DateTime
+  image?: string; // Optional
+}
 
+const ContestCarousel = ({ params }: any) => {
   const [currentIndex, setCurrentIndex] = useState(0);
-  const [data, setData] = useState([]);
+  const [data, setData] = useState<Contest[]>([]); // Type the data as an array of Contest
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     fetch("https://itbd-backend.vercel.app/api/v1/contest")
       .then((response) => response.json())
       .then((data) => {
-        setData(data.data);
+        setData(data.data); // Ensure data.data matches the Contest[] structure
         setLoading(false);
       });
   }, []);
 
-  const now = new Date(); // Current time
+  const now = new Date();
 
   // Filter contests with endTime greater than now
   const activeContests = data.filter(
-    //@ts-ignore
     (contest) => new Date(contest.endTime) > now
   );
 
@@ -46,7 +54,7 @@ const ContestCarousel = ({params}:any) => {
     exit: { x: "-100%", opacity: 0 },
   };
 
-  const defaultImages = [image1.src, image2.src]; // Default image URLs
+  const defaultImages = [image1.src, image2.src];
 
   if (loading) {
     return (
@@ -102,7 +110,6 @@ const ContestCarousel = ({params}:any) => {
             <Typography fontWeight={700} fontSize={34}>
               Join the Contest!
             </Typography>
-            {/* Text and Image Wrapper */}
             <Box
               sx={{
                 display: "flex",
@@ -115,7 +122,6 @@ const ContestCarousel = ({params}:any) => {
                 gap: 4,
               }}
             >
-              {/* Text Section */}
               <Box sx={{ flex: 1 }}>
                 <Typography variant="h3" sx={{ mb: 2 }}>
                   {activeContests[currentIndex].name}
@@ -135,14 +141,13 @@ const ContestCarousel = ({params}:any) => {
                     activeContests[currentIndex].endTime
                   ).toLocaleString()}
                 </Typography>
-                <Box sx={{display:'flex'}}>
-                <Link href={`/contest/${activeContests[currentIndex].id}`}>
-                  <AnimatedButton name="Register Now!" variant="contained" />
-                </Link>
+                <Box sx={{ display: "flex" }}>
+                  <Link href={`/contest/${activeContests[currentIndex].id}`}>
+                    <AnimatedButton name="Register Now!" variant="contained" />
+                  </Link>
                 </Box>
               </Box>
 
-              {/* Image Section */}
               <Box
                 sx={{
                   flex: 1,
@@ -178,3 +183,4 @@ const ContestCarousel = ({params}:any) => {
 };
 
 export default ContestCarousel;
+

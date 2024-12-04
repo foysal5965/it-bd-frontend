@@ -14,8 +14,6 @@ import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { storeUserInfo } from '@/services/authService';
 import { useState } from 'react';
-import { useUserLoginMutation } from '@/redux/api/authApi';
-import setAccessToken from '@/services/actions/setAccessToken';
 import { Visibility, VisibilityOff } from '@mui/icons-material';
 import Cookies from 'js-cookie';
 import { useAuth } from '@/lib/Providers/AuthProvider';
@@ -35,21 +33,18 @@ const validationSchema = z.object({
     email: z.string().email("Invalid email address"),
     password: z.string().min(6, "Password must be at least 6 characters"),
 });
-export const defaultValues = {
-    password: "",
-    patient: {
-        name: "",
-        email: "",
-        contactNumber: "",
-        address: "",
-    },
-};
+
 // 2. Your component
 const LoginPage = () => {
     const { login } = useAuth();
     const router = useRouter()
+    const defaultValues: LoginData = {
+        email: "",
+        password: "",
+    };
     const { register, handleSubmit, formState: { errors } } = useForm<LoginData>({
         resolver: zodResolver(validationSchema),
+        defaultValues
     });
     const [error, setError] = useState('')
     const [showNewPassword, setShowNewPassword] = useState(false);

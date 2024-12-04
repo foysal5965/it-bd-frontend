@@ -8,6 +8,7 @@ import { useAddCourseCategoryWithFormDataMutation } from '@/redux/api/courseCate
 import { modifyPayload } from '@/utils/modifyPayload';
 import { toast } from 'sonner';
 import { IGenericErrorMessage } from '@/types';
+import Image from 'next/image';
 export type ErrorResponse = {
     data: string;
     statusCode: number;
@@ -104,7 +105,9 @@ const CreateCourseCategory = () => {
                                 borderRadius={2}
                             >
                                 {imagePreview ? (
-                                    <img
+                                    <Image
+                                    width={32}
+                                    height={32}
                                         src={imagePreview}
                                         alt="Preview"
                                         style={{ width:'32px', height:'32px', marginBottom: 16 }}

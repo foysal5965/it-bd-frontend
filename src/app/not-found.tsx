@@ -63,7 +63,7 @@ const NotFoundPage = () => {
           animate={{ opacity: 1 }}
           transition={{ delay: 0.5 }}
         >
-          Oops! The page you're looking for doesn't exist.
+          Oops! The page you are looking for does not exist.
         </Typography>
 
         <Box

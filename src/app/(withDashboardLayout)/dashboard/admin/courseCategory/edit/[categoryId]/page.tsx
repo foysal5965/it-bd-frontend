@@ -9,6 +9,7 @@ import { modifyPayload } from '@/utils/modifyPayload';
 import { toast } from 'sonner';
 import { IGenericErrorMessage } from '@/types';
 import { useRouter } from 'next/navigation';
+import Image from 'next/image';
 type CourseCategoryErrorResponse = {
     data: string;
     statusCode: number;
@@ -111,7 +112,9 @@ const CourseCategoryUpdate = ({ params }: TParams) => {
                                 borderRadius={2}
                             >
                                 {imagePreview ? (
-                                    <img
+                                    <Image
+                                    width={32}
+                                    height={32}
                                         src={imagePreview}
                                         alt="Preview"
                                         style={{ width: "100%", height: "auto", marginBottom: 16 }}

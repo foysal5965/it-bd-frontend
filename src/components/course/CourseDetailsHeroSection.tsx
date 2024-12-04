@@ -150,7 +150,7 @@ if(isLoading){
                                     {
                                         user?.role === "STUDENT" ? <Box>
                                             <AnimatedButton
-                                                varient='contaiend'
+                                                variant='contaiend'
                                                 name='Admission'
                                                 onClick={handleOpen}
                                             />
@@ -162,7 +162,7 @@ if(isLoading){
                                                 courseInfo={course}
                                             />
                                         </Box> : <Link href='/login'><AnimatedButton
-                                            varient='contaiend'
+                                            variant='contaiend'
                                             name='Admission'
                                             onClick={handleOpen}
                                         /></Link>
@@ -170,7 +170,7 @@ if(isLoading){
 
 
                                     <Box>
-                                        <AnimatedButton name='Join Free Seminer' varient='contained' onClick={handleSeminerOpen} />
+                                        <AnimatedButton name='Join Free Seminer' variant='contained' onClick={handleSeminerOpen} />
                                         <SeminerModal
                                             open={seminerModal}
                                             handleClose={handleSeminerModalClose}

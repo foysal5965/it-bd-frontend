@@ -43,7 +43,7 @@ const CreateAdminPage = () => {
         const data = modifyPayload(values);
    
         const res = await registerAdmin(data);
-      
+      console.log(res)
         try {
 
             if (res?.data?.id) {

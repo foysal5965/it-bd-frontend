@@ -39,15 +39,7 @@ const validationSchema = z.object({
     }),
     password: z.string().min(6, "Password must be at least 6 characters"),
 });
-export const defaultValues = {
-    password: "",
-    patient: {
-        name: "",
-        email: "",
-        contactNumber: "",
-        address: "",
-    },
-};
+
 // 2. Your component
 
 const RegistrationForm = () => {

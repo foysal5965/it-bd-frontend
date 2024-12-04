@@ -40,7 +40,7 @@ export const removeUser = () => {
 
 export const getNewAccessToken = async () => {
    return await axiosInstance({
-      url: 'https://itbd-backend-citdwjy8c-foysal5965s-projects.vercel.app/api/v1auth/refresh-token',
+      url: 'https://itbd-backend.vercel.app/api/v1/auth/refresh-token',
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       withCredentials:true

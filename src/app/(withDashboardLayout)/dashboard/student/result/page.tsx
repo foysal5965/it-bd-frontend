@@ -20,6 +20,24 @@ import { Chart as ChartJS, BarElement, CategoryScale, LinearScale } from "chart.
 import { useGetMyResultsQuery } from "@/redux/api/resultApi";
 
 ChartJS.register(BarElement, CategoryScale, LinearScale);
+interface StudentResult {
+  id: string;
+  examId: string;
+  exam: {
+    id: string;
+    title: string;
+    status: string;
+  };
+  score: number;
+  studentId: string;
+  student: {
+    id: string;
+    name: string;
+    email: string;
+  };
+  createdAt: string; // ISO string for DateTime
+  updatedAt: string; // ISO string for DateTime
+}
 
 const ResultsPage = () => {
   const isMobile = useMediaQuery("(max-width: 600px)");
@@ -109,7 +127,7 @@ const ResultsPage = () => {
             </TableRow>
           </TableHead>
           <TableBody>
-            {examData.map((exam, index) => (
+            {examData.map((exam:StudentResult, index: number) => (
               <TableRow
                 key={exam.id}
                 component={motion.tr}
