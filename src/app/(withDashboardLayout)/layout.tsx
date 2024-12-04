@@ -277,7 +277,7 @@ const DashboardLayout = ({ children }: { children: React.ReactNode }) => {
                             >
                                 <Menu />
                             </IconButton>
-                            <Link href='/'><Image src={logo} alt='logo' /></Link>
+                            <Link href='/'>IT Bangladesh</Link>
                             <Box
                                 sx={{
                                     display: "flex",

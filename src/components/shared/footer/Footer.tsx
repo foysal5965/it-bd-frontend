@@ -51,7 +51,7 @@ const Footer = () => {
             fontWeight={600}
             color="white"
           >
-            <Image src={logo} alt="logo"/>
+            IT Bangladesh
           </Typography>
           <Typography component="p" color="white">
             Privacy Policy! Terms & Conditions
