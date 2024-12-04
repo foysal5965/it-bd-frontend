@@ -2,7 +2,7 @@
 
 export const registerContestPerticipent = async (formData: FormData) => {
   const res = await fetch(
-    `${process.env.NEXT_PUBLIC_BACKEND_API_URL}/manage-contest/registration`,
+    `https://itbd-backend.vercel.app/api/v1/manage-contest/registration`,
     {
       method: "POST",
       body: formData,
